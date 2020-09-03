@@ -3,6 +3,7 @@ import numpy as np
 
 from models import attention as attn
 
+
 def test_scaled_dot_product_attention():
     keys = tf.constant([[10., 0., 0.],
                         [0., 10., 0.],
