@@ -21,8 +21,8 @@ def test_scaled_dot_product_attention_with_masked_input():
     keys = tf.constant([[3., 0., 0.],
                         [0., 10., 0.],
                         [0., 0., 4.],
-                        [0., 0., 0.]])
-    values = tf.constant([[5., 9.], [2., 6.], [5., 3.], [0., 0.]])
+                        [0., 10., 0.]])
+    values = tf.constant([[5., 9.], [2., 6.], [5., 3.], [10000., 10000.]])
     mask = np.array([[0, 0, 0, 1]])
     output = attn.scaled_dot_product_attention(queries, keys, values, mask)
     expected = np.array([[2., 6.]])
