@@ -13,7 +13,6 @@ QUERIES = tf.constant([[[0., 0., 0.],
                         [0., NUM, 0.]]])
 
 
-
 def test_scaled_dot_product_attention_without_masked_input():
     queries = tf.constant([[0., 10., 0.]])
     keys = tf.constant([[3., 0., 0.],
