@@ -4,10 +4,10 @@ from tensorflow.keras.layers import Dense
 
 def scaled_dot_product_attention(queries, keys, values, mask):
     """
-    attention(q, keys, v) = softmax(q @ k^T / sqrt(dim(k))) @ v
+    attention(q, k, v) = softmax(q @ k^T / sqrt(dim(k))) @ v
     """
     product = tf.matmul(queries, keys, transpose_b=True)
-    keys_dim = tf.cast(tf.shape(keys)[-1], tf.float32)
+    keys_dim = tf.cast(keys.shape[-1], tf.float32)
     scaled_product = product / tf.math.sqrt(keys_dim)
 
     if mask is not None:
@@ -15,12 +15,11 @@ def scaled_dot_product_attention(queries, keys, values, mask):
 
     attention_weights = tf.nn.softmax(scaled_product, axis=-1)
     attention = tf.matmul(attention_weights, values)
-
     return attention
 
 
 class MultiHeadAttention(tf.keras.layers.Layer):
-    def __init__(self, input_dim, num_heads, **kwargs):
+    def __init__(self, input_dim: int, num_heads: int, **kwargs):
         super(MultiHeadAttention, self).__init__()
         self.num_heads = num_heads
         self.input_dim = input_dim
@@ -41,7 +40,7 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         return tf.transpose(x, perm=[0, 2, 1, 3])
 
     def call(self, queries, keys, values, mask=None):
-        batch_size = tf.shape(queries)[0]
+        batch_size = queries.shape[0]
 
         queries = self.query_matrix(queries)
         keys = self.key_matrix(keys)
@@ -57,5 +56,4 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         output_shape = (batch_size, -1, self.input_dim)
         concat_attention = tf.reshape(attention, output_shape)
         output = self.dense_out(concat_attention)
-
         return output
