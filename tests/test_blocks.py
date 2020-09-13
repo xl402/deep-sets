@@ -13,6 +13,27 @@ SEQ_LENGTHS = [1, 42, 69]
 
 @pytest.mark.parametrize('input_dim, seq_len',
                          itertools.product(INPUT_DIMS, SEQ_LENGTHS))
+def test_mlp(input_dim, seq_len):
+    mlp = blocks.MLP(input_dim)
+    shape = (1, seq_len, input_dim)
+    y = tf.random.uniform(shape, dtype=tf.float64)
+    out = mlp(y).numpy()
+    assert np.allclose(out.shape, np.array(shape))
+
+
+@pytest.mark.parametrize('input_dim, seq_len',
+                         itertools.product(INPUT_DIMS, SEQ_LENGTHS))
+def test_multihead_attention_block(input_dim, seq_len):
+    mlp = blocks.MLP(input_dim)
+    mab = blocks.MultiHeadAttentionBlock(input_dim, 5, mlp)
+    shape = (1, seq_len, input_dim)
+    y = tf.random.uniform(shape, dtype=tf.float64)
+    out = mab(y, y).numpy()
+    assert np.allclose(out.shape, np.array(shape))
+
+
+@pytest.mark.parametrize('input_dim, seq_len',
+                         itertools.product(INPUT_DIMS, SEQ_LENGTHS))
 def test_set_attention_block_is_permutation_equivariant(input_dim, seq_len):
     num_heads = 5
     mlp = blocks.MLP(input_dim)
