@@ -4,7 +4,7 @@
 A modified implementation of the [Set Transformer](http://proceedings.mlr.press/v97/lee19d/lee19d.pdf) using Tensorflow and Keras.
 
 ### Problem Definition
-A function <img src="https://render.githubusercontent.com/render/math?math=f: \; X^n \rightarrow Y^n"> is permutation equivariant iff for any permutation <img src="https://render.githubusercontent.com/render/math?math=\pi">:
+A function <img src="https://render.githubusercontent.com/render/math?math=f: X^n \rightarrow Y^n"> is permutation equivariant iff for any permutation <img src="https://render.githubusercontent.com/render/math?math=\pi">:
 
 <img src="https://render.githubusercontent.com/render/math?math=f(\pi x) = \pi f(x)">
 
