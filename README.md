@@ -4,13 +4,11 @@
 A modified implementation of the [Set Transformer](http://proceedings.mlr.press/v97/lee19d/lee19d.pdf) using Tensorflow and Keras.
 
 ### Problem Definition
-A function <img src="https://render.githubusercontent.com/render/math?math=f: X^n \rightarrow Y^n"> is permutation equivariant iff for any permutation <img src="https://render.githubusercontent.com/render/math?math=\pi">:
+A function <img src="https://render.githubusercontent.com/render/math?math=f: X^n \rightarrow Y^n"> is permutation equivariant iff for any permutation <img src="https://render.githubusercontent.com/render/math?math=\pi">: <img src="https://render.githubusercontent.com/render/math?math=f(\pi x) = \pi f(x)">
 
-<img src="https://render.githubusercontent.com/render/math?math=f(\pi x) = \pi f(x)">
+Similarly, a function is permutation equivariant if: <img src="https://render.githubusercontent.com/render/math?math=f(\pi x) = f(x)">
 
-Similarly, a function is permutation equivariant if:
-
-<img src="https://render.githubusercontent.com/render/math?math=f(\pi x) = f(x)">
+Neural networks tend to satisfy neither by construction. This repo implements a version of the [Set Transformer](https://arxiv.org/abs/1810.00825).
 
 ### Initial Setup
 #### Install dependencies
