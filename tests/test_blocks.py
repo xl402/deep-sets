@@ -88,7 +88,7 @@ def test_masked_set_attention_block_is_independent_of_masked_data(input_dim, seq
     # change input data that has been masked
     mask_idx = np.where(mask)
     y = y.numpy()
-    y[mask_idx] = 0
+    y[mask_idx] = -999.
     masked_output = sab(tf.convert_to_tensor(y), mask=mask).numpy()
 
     valid_idx = np.where(mask == 0)
