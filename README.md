@@ -8,7 +8,7 @@ A function <img src="https://render.githubusercontent.com/render/math?math=f: X^
 
 Similarly, a function is permutation equivariant if: <img src="https://render.githubusercontent.com/render/math?math=f(\pi x) = f(x)">
 
-Neural networks tend to satisfy neither by construction. This repo implements a version of the [Set Transformer](https://arxiv.org/abs/1810.00825).
+Neural networks tend to satisfy neither of these conditions by construction. This repo implements a version of the [Set Transformer](https://arxiv.org/abs/1810.00825).
 
 ### Initial Setup
 #### Install dependencies
