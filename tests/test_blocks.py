@@ -72,7 +72,7 @@ def test_masked_set_attention_block_is_permutation_equivariant(input_dim, seq_le
     expected = tf.gather(unshuffled_output, shuffled_indices, axis=1)
     output = sab(shuffled_y, mask=shuffled_mask)
 
-    assert np.allclose(output.numpy(), expected.numpy(), atol=1e-6)
+    assert np.allclose(output.numpy(), expected.numpy(), atol=1e-5)
 
 
 @pytest.mark.parametrize('input_dim, seq_len',
@@ -94,4 +94,4 @@ def test_masked_set_attention_block_is_independent_of_masked_data(input_dim, seq
     valid_idx = np.where(mask == 0)
     expected = original_output[valid_idx]
     output = masked_output[valid_idx]
-    assert np.allclose(output, expected, atol=1e-6)
+    assert np.allclose(output, expected, atol=1e-5)

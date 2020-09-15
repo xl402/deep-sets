@@ -10,6 +10,7 @@ def scaled_dot_product_attention(queries, keys, values, mask):
     keys_dim = tf.cast(keys.shape[-1], tf.float32)
     scaled_product = product / tf.math.sqrt(keys_dim)
 
+    # TODO: mask here should be a tf mask, not numpy array
     if mask is not None:
         scaled_product += (mask * -1e9)
 
