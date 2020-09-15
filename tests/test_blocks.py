@@ -8,13 +8,15 @@ from models import blocks
 
 
 INPUT_DIMS = [10, 20]
+OUTPUT_DIM = 3
+NUM_HEADS = 5
 SEQ_LENGTHS = [1, 42, 69]
 
 
 def test_mlp():
-    input_dim, seq_len = INPUT_DIMS[0], SEQ_LENGTHS[0]
-    mlp = blocks.MLP(input_dim)
-    shape = (1, seq_len, input_dim)
+    seq_len = SEQ_LENGTHS[0]
+    mlp = blocks.MLP(OUTPUT_DIM)
+    shape = (1, seq_len, OUTPUT_DIM)
     y = tf.random.uniform(shape, dtype=tf.float64)
     out = mlp(y).numpy()
     assert np.allclose(out.shape, np.array(shape))
@@ -22,20 +24,20 @@ def test_mlp():
 
 def test_multihead_attention_block():
     input_dim, seq_len = INPUT_DIMS[0], SEQ_LENGTHS[0]
-    mlp = blocks.MLP(input_dim)
-    mab = blocks.MultiHeadAttentionBlock(input_dim, 5, mlp)
-    shape = (1, seq_len, input_dim)
-    y = tf.random.uniform(shape, dtype=tf.float64)
+    mlp = blocks.MLP(OUTPUT_DIM)
+    mab = blocks.MultiHeadAttentionBlock(input_dim, OUTPUT_DIM, NUM_HEADS, mlp)
+    input_shape = (1, seq_len, input_dim)
+    output_shape = (1, seq_len, OUTPUT_DIM)
+    y = tf.random.uniform(input_shape, dtype=tf.float64)
     out = mab(y, y).numpy()
-    assert np.allclose(out.shape, np.array(shape))
+    assert np.allclose(out.shape, np.array(output_shape))
 
 
 @pytest.mark.parametrize('input_dim, seq_len',
                          itertools.product(INPUT_DIMS, SEQ_LENGTHS))
 def test_set_attention_block_is_permutation_equivariant(input_dim, seq_len):
-    num_heads = 5
-    mlp = blocks.MLP(input_dim)
-    sab = blocks.SetAttentionBlock(input_dim, num_heads, mlp)
+    mlp = blocks.MLP(OUTPUT_DIM)
+    sab = blocks.SetAttentionBlock(input_dim, OUTPUT_DIM, NUM_HEADS, mlp)
 
     y = tf.random.uniform((1, seq_len, input_dim), dtype=tf.float64)
     unshuffled_output = sab(y)
@@ -52,11 +54,10 @@ def test_set_attention_block_is_permutation_equivariant(input_dim, seq_len):
 
 
 @pytest.mark.parametrize('input_dim, seq_len',
-                         itertools.product(INPUT_DIMS, SEQ_LENGTHS))
+                          itertools.product(INPUT_DIMS, SEQ_LENGTHS))
 def test_masked_set_attention_block_is_permutation_equivariant(input_dim, seq_len):
-    num_heads = 5
-    mlp = blocks.MLP(input_dim)
-    sab = blocks.SetAttentionBlock(input_dim, num_heads, mlp)
+    mlp = blocks.MLP(OUTPUT_DIM)
+    sab = blocks.SetAttentionBlock(input_dim, OUTPUT_DIM, NUM_HEADS, mlp)
 
     y = tf.random.uniform((1, seq_len, input_dim), dtype=tf.float64)
     mask = np.random.randint(0, 2, (1, seq_len))
@@ -77,9 +78,8 @@ def test_masked_set_attention_block_is_permutation_equivariant(input_dim, seq_le
 @pytest.mark.parametrize('input_dim, seq_len',
                          itertools.product(INPUT_DIMS, SEQ_LENGTHS))
 def test_masked_set_attention_block_is_independent_of_masked_data(input_dim, seq_len):
-    num_heads = 5
-    mlp = blocks.MLP(input_dim)
-    sab = blocks.SetAttentionBlock(input_dim, num_heads, mlp)
+    mlp = blocks.MLP(OUTPUT_DIM)
+    sab = blocks.SetAttentionBlock(input_dim, OUTPUT_DIM, NUM_HEADS, mlp)
 
     y = tf.random.uniform((1, seq_len, input_dim), dtype=tf.float64)
     mask = np.random.randint(0, 2, (1, seq_len))

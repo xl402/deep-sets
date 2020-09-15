@@ -8,7 +8,6 @@ from models import attention as attn
 
 
 NUM = np.sqrt(np.log(3))
-MULTIHEAD_INPUT_SHAPES = [(12, 5), (3, 4), (512, 7)]
 QUERIES = tf.constant([[[0., 0., 0.],
                         [0., NUM, 0.]]])
 
@@ -38,29 +37,18 @@ def test_scaled_dot_product_attention_with_masked_input():
     assert np.allclose(output.numpy(), expected)
 
 
-@pytest.mark.parametrize('shape', MULTIHEAD_INPUT_SHAPES)
-def test_raises_for_invalid_number_of_heads_for_multihead_attention(shape):
-    with pytest.raises(AssertionError) as e_msg:
-        _ = attn.MultiHeadAttention(*shape)
-    assert 'invalid number of heads' in str(e_msg)
-
-
-@patch('models.attention.Dense')
-def test_multihead_attention_without_masked_input(Dense):
-    Dense.return_value = tf.keras.layers.Dense(3, kernel_initializer='ones')
-    mha = attn.MultiHeadAttention(3, 3)
-    expected = np.array([[[1.5 * NUM, 1.5 * NUM, 1.5 * NUM],
-                          [2.25 * NUM, 2.25 * NUM, 2.25 * NUM]]])
+def test_multihead_attention_without_masked_input():
+    mha = attn.MultiHeadAttention(3, 1, 30, kernel_initializer='ones')
+    expected = np.array([[[15 * NUM],
+                          [22.5 * NUM]]])
     output = mha(QUERIES, QUERIES, QUERIES)
     output = output.numpy().reshape(expected.shape)
     assert np.allclose(output, expected)
 
 
-@patch('models.attention.Dense')
-def test_multihead_attention_with_masked_input(Dense):
-    Dense.return_value = tf.keras.layers.Dense(3, kernel_initializer='ones')
-    mha = attn.MultiHeadAttention(3, 3)
-    expected = np.ones((1, 2, 3)) * 3 * NUM
+def test_multihead_attention_with_masked_input():
+    mha = attn.MultiHeadAttention(3, 1, 30, kernel_initializer='ones')
+    expected = np.ones((1, 2, 1)) * 30. * NUM
     mask = np.array([[1, 0]])
     output = mha(QUERIES, QUERIES, QUERIES, mask=mask)
     output = output.numpy().reshape(expected.shape)

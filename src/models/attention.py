@@ -19,23 +19,21 @@ def scaled_dot_product_attention(queries, keys, values, mask):
 
 
 class MultiHeadAttention(tf.keras.layers.Layer):
-    def __init__(self, input_dim: int, num_heads: int, **kwargs):
+    def __init__(self, input_dim: int, output_dim, num_heads: int, **kwargs):
         super(MultiHeadAttention, self).__init__()
         self.num_heads = num_heads
         self.input_dim = input_dim
+        self.output_dim = output_dim
 
-        assert input_dim % self.num_heads == 0, "invalid number of heads"
+        total_output_dim = output_dim * num_heads
+        self.query_matrix = Dense(total_output_dim, **kwargs)
+        self.key_matrix = Dense(total_output_dim, **kwargs)
+        self.value_matrix = Dense(total_output_dim, **kwargs)
 
-        self.depth = input_dim // self.num_heads
-
-        self.query_matrix = Dense(input_dim, **kwargs)
-        self.key_matrix = Dense(input_dim, **kwargs)
-        self.value_matrix = Dense(input_dim, **kwargs)
-
-        self.dense_out = Dense(input_dim)
+        self.dense_out = Dense(output_dim, **kwargs)
 
     def split_heads(self, x, batch_size):
-        output_shape = (batch_size, -1, self.num_heads, self.depth)
+        output_shape = (batch_size, -1, self.num_heads, self.output_dim)
         x = tf.reshape(x, output_shape)
         return tf.transpose(x, perm=[0, 2, 1, 3])
 
@@ -53,7 +51,7 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         attention = scaled_dot_product_attention(queries, keys, values, mask)
         attention = tf.transpose(attention, perm=[0, 2, 1, 3])
 
-        output_shape = (batch_size, -1, self.input_dim)
+        output_shape = (batch_size, -1, self.output_dim * self.num_heads)
         concat_attention = tf.reshape(attention, output_shape)
         output = self.dense_out(concat_attention)
         return output

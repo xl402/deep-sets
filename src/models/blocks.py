@@ -16,24 +16,22 @@ class MLP(tf.keras.layers.Layer):
 
 
 class MultiHeadAttentionBlock(tf.keras.layers.Layer):
-    def __init__(self, input_dim: int, num_heads: int, mlp: MLP):
+    def __init__(self, input_dim, output_dim, num_heads, mlp: MLP):
         super(MultiHeadAttentionBlock, self).__init__()
-        self.multihead = MultiHeadAttention(input_dim, num_heads)
-        self.layer_norm1 = LayerNormalization(epsilon=1e-6, dtype='float32')
-        self.layer_norm2 = LayerNormalization(epsilon=1e-6, dtype='float32')
+        self.multihead = MultiHeadAttention(input_dim, output_dim, num_heads)
+        self.layer_norm = LayerNormalization(epsilon=1e-6, dtype='float32')
         self.mlp = mlp
 
     def call(self, source, target, mask=None):
         attention = self.multihead(source, target, target, mask)
-        skip_connection = self.layer_norm1(source + attention)
-        output = self.layer_norm2(skip_connection + self.mlp(skip_connection))
+        output = self.layer_norm(attention + self.mlp(attention))
         return output
 
 
 class SetAttentionBlock(tf.keras.layers.Layer):
-    def __init__(self, input_dim: int, num_heads: int, mlp: MLP):
+    def __init__(self, input_dim, output_dim, num_heads, mlp: MLP):
         super(SetAttentionBlock, self).__init__()
-        self.mab = MultiHeadAttentionBlock(input_dim, num_heads, mlp)
+        self.mab = MultiHeadAttentionBlock(input_dim, output_dim, num_heads, mlp)
 
     def call(self, x, mask=None):
         return self.mab(x, x, mask)
