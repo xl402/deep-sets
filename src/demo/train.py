@@ -15,3 +15,7 @@ class SetTransformer(tf.keras.Model):
         x_1 = self.sab1(self.linear(x), mask)
         x_2 = self.sab2(x_1, mask)
         return x_2
+
+
+if __name__ == '__main__':
+    set_transformer = SetTransformer(2, 1, 128)

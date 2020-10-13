@@ -50,7 +50,7 @@ def test_set_attention_block_is_permutation_equivariant(input_dim, seq_len):
     expected = tf.gather(unshuffled_output, shuffled_indices, axis=1)
     output = sab(shuffled_y)
 
-    assert np.allclose(output.numpy(), expected.numpy(), atol=1e-6)
+    assert np.allclose(output.numpy(), expected.numpy(), atol=1e-5)
 
 
 @pytest.mark.parametrize('input_dim, seq_len',
