@@ -15,6 +15,13 @@ class NearestNeighbourGenerator(Sequence):
         self.seed = seed
         self.rng = np.random.RandomState(seed)
     
+    def __repr__(self):
+        params = 'dim={}, max_len={}, data_size={}, batch_size={}, seed={}'
+        params = params.format(self.dim, self.max_len,
+                               self.data_size, self.batch_size, self.seed)
+        out = 'NearestNeighbourGenerator({})'
+        return out.format(params)
+
     def __len__(self):
         return self.data_size // self.batch_size
 
@@ -26,13 +33,6 @@ class NearestNeighbourGenerator(Sequence):
             x_data.append(xs)
             y_data.append(ys)
         return np.array(x_data), np.array(y_data)
-
-    def __repr__(self):
-        params = 'dim={}, max_len={}, data_size={}, batch_size={}, seed={}'
-        params = params.format(self.dim, self.max_len,
-                               self.data_size, self.batch_size, self.seed)
-        out = 'NearestNeighbourGenerator({})'
-        return out.format(params)
 
     def _get_nearest_neighbours(self, sequence_len, dim):
         xs = self.rng.randn(sequence_len, dim)
