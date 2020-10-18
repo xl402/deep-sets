@@ -7,6 +7,7 @@ class NearestNeighbourGenerator(Sequence):
     def __init__(self, dim: int, max_len: int, data_size: int, batch_size=1):
         assert data_size > batch_size, 'data size must be larger than batch'
         assert max_len >= 2, 'sequence length is 2 at minimum'
+        assert dim >= 1, 'data dimension must be at least 1'
         self.dim = dim
         self.max_len = max_len
         self.data_size = data_size
