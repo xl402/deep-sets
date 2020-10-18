@@ -12,7 +12,7 @@ MAX_SEQ_LEN = [2, 100]
 BATCH_SIZE = [1, 5, 10]
 
 
-def test_nearest_neighbour_generator_raises_on_bad_dimension():
+def test_nearest_neighbour_generator_raises_on_bad_data_dimension():
     params = {'dim': -1, 'max_len': 10, 'data_size': 10, 'batch_size': 2}
     with pytest.raises(AssertionError) as e:
         nn_generator = NearestNeighbourGenerator(**params)
@@ -26,7 +26,7 @@ def test_nearest_neighbour_generator_raises_when_batch_size_greater_than_data_si
     assert 'data size must be larger than batch' in str(e)
 
 
-def test_nearest_neighbour_generator_raises_when_max_len_is_less_than_2():
+def test_nearest_neighbour_generator_raises_when_max_len_is_less_than_two():
     params = {'dim': 10, 'max_len': 1, 'data_size': 10, 'batch_size': 5}
     with pytest.raises(AssertionError) as e:
         nn_generator = NearestNeighbourGenerator(**params)
@@ -60,7 +60,6 @@ def test_nearest_neighbour_generator_yields_correct_ground_truth(dim, max_len, b
 def _test_nearest_neighbour_ground_truth(xs, ys):
     x_norms = np.linalg.norm(xs, ord=1, axis=1)
     nearest_neighbours = xs[[np.argwhere(x_norms == y)[0, 0] for y in ys]]
-
     for idx, x in enumerate(xs):
         distance_to_nearest = np.linalg.norm(x - nearest_neighbours[idx])
         distance_to_others = np.linalg.norm(xs - x, axis=1)
