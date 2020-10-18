@@ -20,5 +20,4 @@ Then expoert `src` to path:
 ```
 export PYTHONPATH=src
 ```
-To test the scripts, run `pytest` in the root directory, you may need to
-install it using `pip`
+To test the scripts, run `pytest` in the root directory
