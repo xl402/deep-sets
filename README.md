@@ -1,5 +1,5 @@
 # Deep-Sets
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/xl402/deep-sets/deep-sets-transformer) &nbsp; ![Python version](https://img.shields.io/github/pipenv/locked/python-version/xl402/deep-sets)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/xl402/deep-sets/deep-sets-transformer)
 
 A modified implementation of the [Set Transformer](http://proceedings.mlr.press/v97/lee19d/lee19d.pdf) using Tensorflow and Keras.
 
