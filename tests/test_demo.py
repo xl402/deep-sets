@@ -72,7 +72,7 @@ def _test_nearest_neighbour_ground_truth(xs, ys):
         distance_to_nearest = np.linalg.norm(x - nearest_neighbours[idx])
         distance_to_others = np.linalg.norm(xs - x, axis=1)
         distance_to_others[idx] = np.inf
-        assert np.all(distance_to_others >= distance_to_nearest - 1e8)
+        assert np.all(distance_to_others >= distance_to_nearest - 1e-8)
 
 
 def test_nearest_neighbour_generator_yields_reproducible_data():
