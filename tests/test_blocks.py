@@ -13,7 +13,7 @@ NUM_HEADS = 5
 SEQ_LENGTHS = [1, 42, 69]
 
 
-def test_mlp():
+def test_mlp_has_right_output_shape():
     seq_len = SEQ_LENGTHS[0]
     mlp = blocks.MLP(OUTPUT_DIM)
     shape = (1, seq_len, OUTPUT_DIM)
@@ -22,7 +22,7 @@ def test_mlp():
     assert np.allclose(out.shape, np.array(shape))
 
 
-def test_multihead_attention_block():
+def test_multihead_attention_block_has_right_output_shape():
     input_dim, seq_len = INPUT_DIMS[0], SEQ_LENGTHS[0]
     mlp = blocks.MLP(OUTPUT_DIM)
     mab = blocks.MultiHeadAttentionBlock(input_dim, OUTPUT_DIM, NUM_HEADS, mlp)
