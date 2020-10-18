@@ -41,4 +41,5 @@ class NearestNeighbourGenerator(Sequence):
         nearest_idx = np.argmin(distances, axis=1)
         nearest_x = xs[nearest_idx]
         ys = np.linalg.norm(nearest_x, ord=1, axis=1)
+        ys = np.expand_dims(ys, axis=-1)
         return xs, ys

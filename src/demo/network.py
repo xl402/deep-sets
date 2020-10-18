@@ -12,6 +12,6 @@ class SetTransformer(tf.keras.Model):
         self.sab2 = SetAttentionBlock(input_dim, output_dim, num_heads, MLP(output_dim))
 
     def call(self, x, mask=None):
-        x_1 = self.sab1(self.linear(x), mask)
-        x_2 = self.sab2(x_1, mask)
+        x_1 = self.sab1(x, mask)
+        x_2 = self.sab2(self.linear(x_1), mask)
         return x_2

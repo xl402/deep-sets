@@ -48,7 +48,7 @@ def test_nearest_neighbour_generator_yields_correct_data_shape(dim, max_len, bat
     nn_generator = NearestNeighbourGenerator(**params)
     for x, y in nn_generator:
         batch_x, seq_x, dim_x = x.shape
-        batch_y, seq_y = y.shape
+        batch_y, seq_y, _ = y.shape
         assert batch_x == batch_size
         assert seq_x == seq_y
         assert seq_x <= max_len
