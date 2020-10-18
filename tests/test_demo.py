@@ -1,4 +1,5 @@
 import itertools
+from hashlib import sha1
 
 from sklearn.metrics.pairwise import euclidean_distances
 import numpy as np
@@ -10,6 +11,13 @@ from demo.data import NearestNeighbourGenerator
 DATA_DIMS = [1, 10, 100]
 MAX_SEQ_LEN = [2, 100]
 BATCH_SIZE = [1, 5, 10]
+
+
+def test_nearest_neighbour_generator_has_repr():
+    params = {'dim': 5, 'max_len': 10, 'data_size': 10, 'batch_size': 2}
+    nn_generator = NearestNeighbourGenerator(**params)
+    for key, value in params.items():
+        assert '{}={}'.format(key, str(value)) in repr(nn_generator)
 
 
 def test_nearest_neighbour_generator_raises_on_bad_data_dimension():
@@ -65,3 +73,18 @@ def _test_nearest_neighbour_ground_truth(xs, ys):
         distance_to_others = np.linalg.norm(xs - x, axis=1)
         distance_to_others[idx] = np.inf
         assert np.all(distance_to_others >= distance_to_nearest - 1e8)
+
+
+def test_nearest_neighbour_generator_yields_reproducible_data():
+    params = {'dim': 2, 'max_len': 10, 'data_size': 10, 'batch_size': 2, 'seed': 0}
+    results = dict()
+    for i in range(2):
+        nn_generator = NearestNeighbourGenerator(**params)
+        for x, y in nn_generator:
+            x_hash = sha1(x).hexdigest()
+            if x_hash not in results:
+                results[x_hash] = y
+            else:
+                print('hi')
+                assert np.all(results[x_hash] == y)
+    assert len(results) == nn_generator.__len__() 
