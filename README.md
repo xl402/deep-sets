@@ -18,6 +18,6 @@ pip install -r requirements.txt
 ```
 Then expoert `src` to path:
 ```
-export PYTHONPATH=src
+export PYTHONPATH=PATH_TO_REPO/src
 ```
 To test the scripts, run `pytest` in the root directory

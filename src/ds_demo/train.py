@@ -1,7 +1,7 @@
 from tensorflow import keras
 
-from demo.data import NearestNeighbourGenerator as NNGenerator
-from demo.network import SetTransformer
+from ds_demo.data import NearestNeighbourGenerator as NNGenerator
+from ds_demo.network import SetTransformer
 
 
 if __name__ == '__main__':
@@ -17,4 +17,5 @@ if __name__ == '__main__':
     model = SetTransformer(dim, 1, 20)
     model.compile(optimizer='Adam', loss=keras.losses.MeanSquaredError())
     model.fit(train_generator,
-              validation_data=val_generator)
+              validation_data=val_generator,
+              epochs=10)

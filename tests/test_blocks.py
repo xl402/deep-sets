@@ -4,7 +4,7 @@ import numpy as np
 import tensorflow as tf
 import pytest
 
-from models import blocks
+from ds_models import blocks
 
 
 INPUT_DIMS = [10, 20]

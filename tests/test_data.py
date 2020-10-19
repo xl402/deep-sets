@@ -5,7 +5,7 @@ from sklearn.metrics.pairwise import euclidean_distances
 import numpy as np
 import pytest
 
-from demo.data import NearestNeighbourGenerator
+from ds_demo.data import NearestNeighbourGenerator
 
 
 DATA_DIMS = [1, 10, 100]

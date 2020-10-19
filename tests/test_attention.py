@@ -4,7 +4,7 @@ import numpy as np
 import tensorflow as tf
 import pytest
 
-from models import attention as attn
+from ds_models import attention as attn
 
 
 NUM = np.sqrt(np.log(3))

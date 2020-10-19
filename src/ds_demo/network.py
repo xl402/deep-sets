@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras.layers import Dense
 
-from models.blocks import MLP, SetAttentionBlock
+from ds_models.blocks import MLP, SetAttentionBlock
 
 
 class SetTransformer(tf.keras.Model):

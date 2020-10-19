@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras.layers import LayerNormalization, Dense
 
-from models.attention import MultiHeadAttention
+from ds_models.attention import MultiHeadAttention
 
 class MLP(tf.keras.layers.Layer):
     def __init__(self, input_dim):
